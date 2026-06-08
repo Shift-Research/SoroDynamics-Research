@@ -1,12 +1,13 @@
 # Rust
 contracts/target/
+target/
+*.wasm
 
 # Node.js / Next.js
 node_modules/
 .next/
 dist/
 build/
-.DS_Store
 
 # Environment Variables (Security)
 .env
@@ -14,5 +15,6 @@ build/
 .env.*.local
 
 # OS generated files
+.DS_Store
 Thumbs.db
 desktop.ini

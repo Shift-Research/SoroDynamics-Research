@@ -1,0 +1,23 @@
+[package]
+name = "soroban-state-dynamics-pool"
+version = "0.1.0"
+edition = "2021"
+description = "Soroban smart contract simulating dynamic token supply mechanics with a public price multiplier for tMEV and elastic supply research."
+
+[lib]
+crate-type = ["cdylib"]
+doctest = false
+
+[dependencies]
+soroban-sdk = "21.2.0"
+
+[features]
+testutils = ["soroban-sdk/testutils"]
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+lto = true
+codegen-units = 1
