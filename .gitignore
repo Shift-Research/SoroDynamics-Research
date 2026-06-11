@@ -1,0 +1,18 @@
+# Rust
+contracts/target/
+
+# Node.js / Next.js
+node_modules/
+.next/
+dist/
+build/
+.DS_Store
+
+# Environment Variables (Security)
+.env
+.env.local
+.env.*.local
+
+# OS generated files
+Thumbs.db
+desktop.ini
