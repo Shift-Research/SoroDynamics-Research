@@ -12,7 +12,7 @@ app.use(express.json());
 // ── In-memory event store shared across routes ──────────────
 export interface PoolEvent {
   id: string;
-  type: "mint" | "supply_shift";
+  type: "mint" | "supply_shift" | "initialize";
   txHash: string;
   ledger: number;
   timestamp: number;

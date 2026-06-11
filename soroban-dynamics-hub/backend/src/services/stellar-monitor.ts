@@ -73,29 +73,38 @@ export class StellarMonitor {
   }
 
   private parseEvent(raw: SorobanRpc.EventResponse): PoolEvent | null {
-    const topic0 = raw.topic?.[0]?.toString() ?? "";
+    if (!raw.topic || raw.topic.length < 2) return null;
+
+    // topics[0] is the "pool" Symbol
+    const topic0 = scValToNative(raw.topic[0]);
+    if (topic0 !== "pool") return null;
+
+    // topics[1] is the action (mint, supply_shift, initialize)
+    const action = scValToNative(raw.topic[1]);
+    const value = scValToNative(raw.value);
     const txHash = raw.txHash;
     const ledger = raw.ledger;
 
     let type: PoolEvent["type"] | null = null;
     let data: Record<string, unknown> = {};
 
-    // Decode topic — the contract publishes ("pool", action)
-    if (topic0.includes("supply_shift")) {
+    if (action === "supply_shift") {
       type = "supply_shift";
-      // topics[1]=old_mult, topics[2]=new_mult, body=total_minted
       data = {
-        oldMultiplier: raw.topic[1]?.toString(),
-        newMultiplier: raw.topic[2]?.toString(),
-        totalMinted: raw.value?.toString(),
+        oldMultiplier: value[0]?.toString(),
+        newMultiplier: value[1]?.toString(),
+        totalMinted: value[2]?.toString(),
       };
-    } else if (topic0.includes("mint")) {
+    } else if (action === "mint") {
       type = "mint";
       data = {
-        to: raw.topic[1]?.toString(),
-        amount: raw.topic[2]?.toString(),
-        totalMinted: raw.topic[3]?.toString(),
+        to: value[0]?.toString(),
+        amount: value[1]?.toString(),
+        totalMinted: value[2]?.toString(),
       };
+    } else if (action === "initialize") {
+      type = "initialize";
+      data = { admin: value[0]?.toString() };
     }
 
     if (!type) return null;

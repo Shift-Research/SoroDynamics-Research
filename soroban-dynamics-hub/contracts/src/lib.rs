@@ -1,7 +1,7 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, Address, Env, Map, Symbol, panic_with_error};
+use soroban_sdk::{contract, contractimpl, contracttype, contracterror, Address, Env, Map, panic_with_error};
 
-#[contracttype]
+#[contracterror]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum ContractError {
     AlreadyInitialized = 1,
